@@ -1,0 +1,26 @@
+services:
+  frontend:
+    build:
+      context: frontend
+      target: development
+    ports:
+      - 9080:3000
+    volumes:
+      - ./frontend/src:/code/src
+      - /project/node_modules
+    networks:
+      - music-manage
+    depends_on:
+      - backend
+  backend:
+    build: backend
+    ports:
+      - "9010:5000"
+    networks:
+      - music-manage
+  redis:
+    image: "redis:alpine"
+    networks:
+      - music-manage
+networks:
+  music-manage: {}
