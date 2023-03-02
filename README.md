@@ -19,3 +19,9 @@ this project can help u to play music on web
 frontend -> localhost:9080
 backend -> localhost:9010
 
+
+
+## docker commands
+
+
+docker compose build;docker compose up;

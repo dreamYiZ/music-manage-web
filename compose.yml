@@ -18,6 +18,8 @@ services:
       - "9010:5000"
     networks:
       - music-manage
+    volumes:
+      - ./backend:/app
   redis:
     image: "redis:alpine"
     networks:

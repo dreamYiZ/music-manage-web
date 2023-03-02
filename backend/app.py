@@ -22,7 +22,7 @@ def get_hit_count():
 @app.route('/')
 def hello():
     count = get_hit_count()
-    return 'Hello World! I have been 222 seen {} times.\n'.format(count)
+    return 'Hello World! I have been --312? seen {} times.\n'.format(count)
 
 
 
@@ -39,3 +39,6 @@ def index():
     posts = conn.execute('SELECT * FROM posts').fetchall()
     conn.close()
     return jsonify(posts)
+
+if __name__ in "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
