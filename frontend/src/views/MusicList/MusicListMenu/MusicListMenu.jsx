@@ -1,7 +1,7 @@
 import classes from "./MusicListMenu.module.sass";
 import MusicListItem from "../MusicListItem/MusicListItem";
 
-function MusicListMenu({ musicList, setPlayingMusic }) {
+function MusicListMenu({ musicList, setPlayingMusic, playingMusic }) {
   // console.log("musicList", musicList);
   //   return "MusicListMenu";
   return (
@@ -11,6 +11,7 @@ function MusicListMenu({ musicList, setPlayingMusic }) {
           <MusicListItem
             key={music}
             music={music}
+            isPlaying={music===playingMusic}
             setPlayingMusic={setPlayingMusic}
           />
         );

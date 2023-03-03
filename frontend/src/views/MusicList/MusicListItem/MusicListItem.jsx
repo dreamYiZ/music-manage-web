@@ -1,11 +1,13 @@
-import "./MusicListItem.sass";
+import classes from "./MusicListItem.module.sass";
 
-function MusicListItem({ music, setPlayingMusic }) {
+function MusicListItem({ music, setPlayingMusic, isPlaying }) {
   // console.log("music", music);
   return (
     <div>
       <button
-        className="MusicListItem"
+        className={`${classes.MusicListItem} ${
+          isPlaying ? classes.IsPlaying : ""
+        } ${isPlaying ? 'IsPlayingMenu' : ""}`}
         onClick={() => {
           setPlayingMusic(music);
         }}

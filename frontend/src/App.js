@@ -5,16 +5,10 @@ import MusicList from './views/MusicList'
 import MusicPlayer from './views/MusicPlayer'
 import { safeFilename, getMusicList, deleteMusic as deleteMusicApi } from "./api/api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import { solid, regular, brands, icon } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import MenuButton from './views/MenuButton/MenuButton'
 
-
-// import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-// import { faHatCowboy } from '@fortawesome/pro-thin-svg-icons'
-// import { faHatChef } from '@fortawesome/sharp-solid-svg-icons'
-// import { faPlateUtensils } from '@fortawesome/sharp-regular-svg-icons'
 
 library.add(fas)
 
@@ -55,6 +49,13 @@ function App() {
     return () => (isFirstLoad = false);
   }, []);
 
+
+  const scrollAnimation = () => {
+    setTimeout(() => {
+      document.querySelector('.IsPlayingMenu').scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+    }, 100)
+  }
+
   const playPrevMusic = () => {
     const idx = musicList.findIndex(i => i === playingMusic)
     const len = musicList.length
@@ -63,6 +64,8 @@ function App() {
     } else {
       setPlayingMusic(musicList[len - 1])
     }
+
+    scrollAnimation()
   };
 
   const playNextMusic = () => {
@@ -74,6 +77,8 @@ function App() {
     } else {
       setPlayingMusic(musicList[0])
     }
+
+    scrollAnimation()
   };
 
   const deleteMusic = () => {
@@ -87,8 +92,8 @@ function App() {
 
 
   const makeFilenameSafe = () => {
-    safeFilename().then(res=>{
-        console.log('safeFilename res-->', res)
+    safeFilename().then(res => {
+      console.log('safeFilename res-->', res)
     })
   }
 
@@ -105,7 +110,7 @@ function App() {
 
       </div>
       <main className='MusicBox'>
-        <MusicList musicList={musicList} setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
+        <MusicList playingMusic={playingMusic} musicList={musicList} setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
         <MusicPlayer
           playPrevMusic={playPrevMusic}
           playNextMusic={playNextMusic}
