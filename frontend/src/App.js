@@ -3,7 +3,7 @@ import './App.css';
 import './App.sass'
 import MusicList from './views/MusicList'
 import MusicPlayer from './views/MusicPlayer'
-import { getMusicList } from "./api/api";
+import { getMusicList, deleteMusic as deleteMusicApi } from "./api/api";
 
 
 
@@ -28,7 +28,7 @@ function App() {
       if (isFirstLoad) {
         setMusicList(data.data);
         if (data.data && data.data.length) {
-          setPlayingMusic(data.data[0]);
+          // setPlayingMusic(data.data[0]);
         }
         // setData(json);
       }
@@ -42,7 +42,6 @@ function App() {
     // cancel any future `setData`
     return () => (isFirstLoad = false);
   }, []);
-
 
   const playPrevMusic = () => {
     const idx = musicList.findIndex(i => i === playingMusic)
@@ -65,7 +64,14 @@ function App() {
     }
   };
 
-  const deleteMusic = () => { };
+  const deleteMusic = () => {
+    playingMusic && deleteMusicApi(playingMusic).then((delRes) => {
+      console.log('delRes', delRes)
+      playNextMusic()
+      const newMusicList = musicList.filter(i=>i!== playingMusic)       
+      setMusicList(newMusicList)
+    })
+  };
 
   return (
     <div className="App">

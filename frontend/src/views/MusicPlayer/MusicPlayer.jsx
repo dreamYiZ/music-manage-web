@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { getMusic } from "../../api/api";
 import classes from "./MusicPlayer.module.sass";
+import AudioPlayer from "./AudioPlayer";
 
 function MusicPlayer({
   playingMusic,
@@ -14,26 +15,44 @@ function MusicPlayer({
   const audioRef = useRef();
 
   useEffect(() => {
-    let isFirstLoad = true;
+    // let isFirstLoad = true;
 
     const fetchData = async () => {
       const playingMusicUrl = await getMusic(playingMusic);
       console.log("playingMusicUrl", playingMusicUrl);
-      if (isFirstLoad) {
-        mSetPlayingMusic(playingMusicUrl);
+      // if (isFirstLoad) {
+      mSetPlayingMusic(playingMusicUrl);
 
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.load();
-          audioRef.current.play();
-        }
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.load();
+        audioRef.current.play();
       }
+      // }
     };
 
     fetchData().catch(console.error);
 
-    return () => (isFirstLoad = false);
+    return () => {
+      // isFirstLoad = false;
+    };
   }, [playingMusic]);
+
+  useEffect(() => {
+    audioRef.current.addEventListener("ended", playNextMusic);
+
+    return () => {
+      audioRef.current.removeEventListener("ended", playNextMusic);
+    };
+  }, [playNextMusic]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.load();
+      audioRef.current.play();
+    }
+  }, []);
 
   const playCurrentMusic = () => {
     audioRef.current.pause();
@@ -41,18 +60,15 @@ function MusicPlayer({
     audioRef.current.play();
   };
 
-
-
   return (
     <div className={classes.MusicPlayer}>
+      <div>{mPlayingMusic}</div>
       <div>
         <div className={classes.MusicTitleBox}>
           <h1 className={classes.MusicPlayAudioTitle}>{playingMusic}</h1>
         </div>
-        <audio className={classes.MusicPlayAudio} controls ref={audioRef}>
-          <source src={mPlayingMusic} type="audio/mpeg" />
-          Your browser does not support the audio element.
-        </audio>
+
+        <AudioPlayer key={mPlayingMusic} ref={audioRef} mPlayingMusic={mPlayingMusic} />
       </div>
       <div className={classes.ButtonGroup}>
         <button

@@ -92,9 +92,17 @@ def scan_folder():
     }
 
 
-@app.route('/delete')
-def delete_file():
-    
+@app.route('/delete/<name>')
+def delete_file(name):
+    decode_name = urllib.parse.unquote(name)
+     
+    filepath = os.path.join(app.config["MUSIC_FOLDER"], decode_name)
+    # If file exists, delete it.
+    if os.path.isfile(filepath):
+        os.remove(filepath)
+    else:
+        # If it fails, inform the user.
+        print("Error: %s file not found" % filepath)
     return {
         'err': '0',
         'msg': 'delete file',
@@ -103,22 +111,10 @@ def delete_file():
 
 
 
-# @app.route('/music/<path:path>')
-# def delete_file():
-    
-#     return {
-#         'err': '0',
-#         'msg': 'delete file',
-#         'data': '',
-#     }
-
-
 
 @app.route('/music/<name>')
 def download_file(name):
     
-    pprint.pprint('name')
-    pprint.pprint(name)
     decode_name = urllib.parse.unquote(name)
     return send_from_directory(app.config["MUSIC_FOLDER"], decode_name)
 
