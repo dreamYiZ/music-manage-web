@@ -1,10 +1,10 @@
 import React from "react";
 import MusicListMenu from "./MusicListMenu/MusicListMenu";
 
-function MusicList({ musicList }) {
+function MusicList({ musicList, setPlayingMusic }) {
   return (
     <div>
-      <MusicListMenu musicList={musicList} />
+      <MusicListMenu musicList={musicList} setPlayingMusic={setPlayingMusic} />
     </div>
   );
 }

@@ -32,6 +32,14 @@ docker compose build;docker compose up -d;
 
 
 
+## contributions
+
+Welcome to contributions
+
+
+
+
+
 
 
 

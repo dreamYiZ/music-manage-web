@@ -2,7 +2,12 @@ import React, { useRef, useEffect, useState } from "react";
 import { getMusic } from "../../api/api";
 import classes from "./MusicPlayer.module.sass";
 
-function MusicPlayer({ playingMusic }) {
+function MusicPlayer({
+  playingMusic,
+  playPrevMusic,
+  playNextMusic,
+  deleteMusic,
+}) {
   console.log("playingMusic", playingMusic);
 
   const [mPlayingMusic, mSetPlayingMusic] = useState();
@@ -36,14 +41,14 @@ function MusicPlayer({ playingMusic }) {
     audioRef.current.play();
   };
 
-  const playPrevMusic = () => {};
 
-  const playNextMusic = () => {};
 
   return (
     <div className={classes.MusicPlayer}>
       <div>
-        <h1 className={classes.MusicPlayAudioTitle}>{playingMusic}</h1>
+        <div className={classes.MusicTitleBox}>
+          <h1 className={classes.MusicPlayAudioTitle}>{playingMusic}</h1>
+        </div>
         <audio className={classes.MusicPlayAudio} controls ref={audioRef}>
           <source src={mPlayingMusic} type="audio/mpeg" />
           Your browser does not support the audio element.
@@ -67,6 +72,13 @@ function MusicPlayer({ playingMusic }) {
           onClick={playNextMusic}
         >
           next
+        </button>
+
+        <button
+          className={`${classes.DeleteButton} ${classes.Button}`}
+          onClick={deleteMusic}
+        >
+          delete
         </button>
       </div>
     </div>
