@@ -1,16 +1,23 @@
 import time
 import sqlite3
 import redis
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 from init_db import init_db
 import _db
 from pathlib import Path
 import pprint
 import os
 import glob
+import urllib
+
+
+MUSIC_FOLDER = '/music'
+
 
 app = Flask(__name__)
 cache = redis.Redis(host='redis', port=6379)
+
+app.config['MUSIC_FOLDER'] = MUSIC_FOLDER
 
 
 
@@ -24,6 +31,9 @@ def get_hit_count():
                 raise exc
             retries -= 1
             time.sleep(0.5)
+
+
+
 
 @app.route('/')
 def hello():
@@ -91,6 +101,26 @@ def delete_file():
         'data': '',
     }
 
+
+
+# @app.route('/music/<path:path>')
+# def delete_file():
+    
+#     return {
+#         'err': '0',
+#         'msg': 'delete file',
+#         'data': '',
+#     }
+
+
+
+@app.route('/music/<name>')
+def download_file(name):
+    
+    pprint.pprint('name')
+    pprint.pprint(name)
+    decode_name = urllib.parse.unquote(name)
+    return send_from_directory(app.config["MUSIC_FOLDER"], decode_name)
 
 
 

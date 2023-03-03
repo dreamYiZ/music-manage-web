@@ -1,11 +1,17 @@
-const BASR_URL = 'http://localhost:9100/api/'
+const BASR_URL = "http://localhost:9100/api/";
 
-const fetchData = (path='') => {
+const fetchData = (path = "") => {
   return fetch(`${BASR_URL}${path}`);
 };
 
 export const getMusicList = () => {
-    fetchData('scans-folder').then(res=>{
-        console.log('res', res)
-    })
+  return fetchData("scans-folder").then((res) => {
+    console.log("res", res);
+    return res.json();
+  });
 };
+
+
+export const getMusic = (name)=>{
+  return `${BASR_URL}music/${name}`;
+}
