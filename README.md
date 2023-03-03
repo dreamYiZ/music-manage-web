@@ -8,6 +8,7 @@ if u have some music mp3 files on computer
 
 this project can help u to play music on web
 
+for quick play and delete
 
 ## how to run 
 
@@ -30,7 +31,13 @@ docker compose build;docker compose up;
 
 docker compose build;docker compose up -d;
 
+## how to use 
 
+1. create music folder in root folder
+2. use docker run this project
+3. open link 9100
+
+u can play music and delete
 
 ## contributions
 
