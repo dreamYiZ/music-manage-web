@@ -2,6 +2,12 @@ import time
 import sqlite3
 import redis
 from flask import Flask, jsonify
+from init_db import init_db
+import _db
+from pathlib import Path
+import pprint
+import os
+import glob
 
 app = Flask(__name__)
 cache = redis.Redis(host='redis', port=6379)
@@ -34,11 +40,61 @@ def get_db_connection():
 
 
 @app.route('/posts')
-def index():
+def posts():
     conn = get_db_connection()
     posts = conn.execute('SELECT * FROM posts').fetchall()
     conn.close()
     return jsonify(posts)
+
+
+
+@app.route('/init-db')
+def init_db_api():
+    init_db()
+    return {
+        'err': '0',
+        'msg': 'init db successfully'
+    }
+
+
+@app.route('/get-folder-path')
+def get_folder_path():
+    fpath = _db.get_folder_path();
+    return {
+        'err': '0',
+        'msg': 'get fpath',
+        'data': fpath
+    }
+
+
+@app.route('/scans-folder')
+def scan_folder():
+    fpath = _db.get_folder_path();
+    _fpath = fpath[0]['fpath'];
+    
+    
+    dir_list = os.listdir(_fpath)
+    return {
+        'err': '0',
+        'msg': 'scans-folder',
+        'data': dir_list,
+        '_fpath': _fpath,
+    }
+
+
+@app.route('/delete')
+def delete_file():
+    
+    return {
+        'err': '0',
+        'msg': 'delete file',
+        'data': '',
+    }
+
+
+
+
+
 
 if __name__ in "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

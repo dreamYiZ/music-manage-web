@@ -6,3 +6,14 @@ CREATE TABLE posts (
     title TEXT NOT NULL,
     content TEXT NOT NULL
 );
+
+
+DROP TABLE IF EXISTS folder_path;
+
+CREATE TABLE folder_path (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fpath TEXT NOT NULL
+);
+
+

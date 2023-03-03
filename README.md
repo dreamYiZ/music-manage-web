@@ -16,6 +16,7 @@ this project can help u to play music on web
 
 ## url
 
+nginx combine -> localhost:9100
 frontend -> localhost:9080
 backend -> localhost:9010
 
@@ -25,3 +26,6 @@ backend -> localhost:9010
 
 
 docker compose build;docker compose up;
+
+
+docker compose build;docker compose up -d;

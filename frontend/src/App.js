@@ -1,11 +1,11 @@
-import logo from './logo.svg';
 import './App.css';
 import './App.sass'
+import MusicList from './views/MusicList'
 
 function App() {
   return (
     <div className="App">
-     fadsfs
+      <MusicList />
     </div>
   );
 }
