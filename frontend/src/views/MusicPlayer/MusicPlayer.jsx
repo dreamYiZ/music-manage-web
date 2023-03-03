@@ -46,13 +46,7 @@ function MusicPlayer({
     };
   }, [playNextMusic]);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.load();
-      audioRef.current.play();
-    }
-  }, []);
+  
 
   const playCurrentMusic = () => {
     audioRef.current.pause();
@@ -62,7 +56,6 @@ function MusicPlayer({
 
   return (
     <div className={classes.MusicPlayer}>
-      <div>{mPlayingMusic}</div>
       <div>
         <div className={classes.MusicTitleBox}>
           <h1 className={classes.MusicPlayAudioTitle}>{playingMusic}</h1>

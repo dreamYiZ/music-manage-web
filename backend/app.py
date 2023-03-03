@@ -9,6 +9,8 @@ import pprint
 import os
 import glob
 import urllib
+from werkzeug.utils import secure_filename
+import util
 
 
 MUSIC_FOLDER = '/music'
@@ -79,9 +81,7 @@ def get_folder_path():
 
 @app.route('/scans-folder')
 def scan_folder():
-    fpath = _db.get_folder_path();
-    _fpath = fpath[0]['fpath'];
-    
+    _fpath = app.config["MUSIC_FOLDER"];
     
     dir_list = os.listdir(_fpath)
     return {
@@ -92,9 +92,25 @@ def scan_folder():
     }
 
 
+@app.route('/rename')
+def rename():
+    _fpath = app.config["MUSIC_FOLDER"];
+    dir_list = os.listdir(_fpath)
+    for file in dir_list:
+        old_file = os.path.join(app.config["MUSIC_FOLDER"], file)
+        new_file = os.path.join(app.config["MUSIC_FOLDER"], util.better_filename(file))
+        os.rename(old_file, new_file)
+     
+    return {
+        'err': '0',
+        'msg': 'rename files',
+    }
+
+
+
 @app.route('/delete/<name>')
 def delete_file(name):
-    decode_name = urllib.parse.unquote(name)
+    decode_name = urllib.parse.unquote_plus(name)
      
     filepath = os.path.join(app.config["MUSIC_FOLDER"], decode_name)
     # If file exists, delete it.
@@ -115,7 +131,7 @@ def delete_file(name):
 @app.route('/music/<name>')
 def download_file(name):
     
-    decode_name = urllib.parse.unquote(name)
+    decode_name = urllib.parse.unquote_plus(name)
     return send_from_directory(app.config["MUSIC_FOLDER"], decode_name)
 
 

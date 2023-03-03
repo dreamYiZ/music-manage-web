@@ -11,16 +11,20 @@ export const getMusicList = () => {
   });
 };
 
+export const getMusic = (name) => {
+  return `${BASR_URL}music/${encodeURIComponent(name)}`;
+};
 
-export const getMusic = (name)=>{
-  return `${BASR_URL}music/${name}`;
-}
-
-
-export const deleteMusic = (name)=>{
-  return fetchData(`/delete/${name}`).then((res) => {
+export const deleteMusic = (name) => {
+  return fetchData(`delete/${name}`).then((res) => {
     console.log("res", res);
     return res.json();
   });
-}
+};
 
+export const safeFilename = () => {
+  return fetchData(`rename`).then((res) => {
+    console.log("res", res);
+    return res.json();
+  });
+};

@@ -3,8 +3,20 @@ import './App.css';
 import './App.sass'
 import MusicList from './views/MusicList'
 import MusicPlayer from './views/MusicPlayer'
-import { getMusicList, deleteMusic as deleteMusicApi } from "./api/api";
+import { safeFilename, getMusicList, deleteMusic as deleteMusicApi } from "./api/api";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { solid, regular, brands, icon } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import MenuButton from './views/MenuButton/MenuButton'
 
+
+// import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
+// import { faHatCowboy } from '@fortawesome/pro-thin-svg-icons'
+// import { faHatChef } from '@fortawesome/sharp-solid-svg-icons'
+// import { faPlateUtensils } from '@fortawesome/sharp-regular-svg-icons'
+
+library.add(fas)
 
 
 function App() {
@@ -68,19 +80,40 @@ function App() {
     playingMusic && deleteMusicApi(playingMusic).then((delRes) => {
       console.log('delRes', delRes)
       playNextMusic()
-      const newMusicList = musicList.filter(i=>i!== playingMusic)       
+      const newMusicList = musicList.filter(i => i !== playingMusic)
       setMusicList(newMusicList)
     })
   };
 
+
+  const makeFilenameSafe = () => {
+    safeFilename().then(res=>{
+        console.log('safeFilename res-->', res)
+    })
+  }
+
   return (
     <div className="App">
-      <MusicList musicList={musicList} setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
-      <MusicPlayer
-        playPrevMusic={playPrevMusic}
-        playNextMusic={playNextMusic}
-        deleteMusic={deleteMusic}
-        setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
+      <div className='ControlPanel'>
+
+
+
+        <MenuButton onClick={makeFilenameSafe} icon={<FontAwesomeIcon icon="fa-solid fa-truck-fast" />}>
+          safe filename
+        </MenuButton>
+
+
+      </div>
+      <main className='MusicBox'>
+        <MusicList musicList={musicList} setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
+        <MusicPlayer
+          playPrevMusic={playPrevMusic}
+          playNextMusic={playNextMusic}
+          deleteMusic={deleteMusic}
+          setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
+      </main>
+
+
     </div>
   );
 }

@@ -9,7 +9,9 @@ const AudioPlayerForwardRef = forwardRef(function AudioPlayer(
     ref.current.pause();
     ref.current.load();
     ref.current.play();
-  }, []);
+  }, [ref]);
+
+  
   return (
     <audio className={classes.MusicPlayAudio} controls ref={ref}>
       <source src={mPlayingMusic} type="audio/mpeg" />
