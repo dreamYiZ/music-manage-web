@@ -109,6 +109,7 @@ function MusicPlayer({
               setPlayMode("single-loop")
             }
           }}
+          style={{display:'none'}}
         >
           {playMode === 'single-loop' ? `one loop`:`order`}
         </button>
