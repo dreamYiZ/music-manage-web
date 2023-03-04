@@ -12,13 +12,15 @@ for quick play and delete
 
 ## how to run 
 
-1、docker compose up
+docker compose up
 
 
 ## url
 
 nginx combine -> localhost:9100
+
 frontend -> localhost:9080
+
 backend -> localhost:9010
 
 
