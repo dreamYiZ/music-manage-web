@@ -17,8 +17,9 @@ function App() {
 
   const [playingMusic, setPlayingMusic] = useState();
 
-
   const [musicList, setMusicList] = useState();
+
+  const [playMode, setPlayMode] = useState();
 
   useEffect(() => {
     let isFirstLoad = true;
@@ -57,12 +58,13 @@ function App() {
   }
 
   const playPrevMusic = () => {
-    const idx = musicList.findIndex(i => i === playingMusic)
-    const len = musicList.length
+    const _musicList = filteredList
+    const idx = _musicList.findIndex(i => i === playingMusic)
+    const len = _musicList.length
     if (idx > 0) {
-      setPlayingMusic(musicList[idx - 1])
+      setPlayingMusic(_musicList[idx - 1])
     } else {
-      setPlayingMusic(musicList[len - 1])
+      setPlayingMusic(_musicList[len - 1])
     }
 
     scrollAnimation()
@@ -70,12 +72,14 @@ function App() {
 
   const playNextMusic = () => {
 
-    const idx = musicList.findIndex(i => i === playingMusic)
-    const len = musicList.length
+    
+    const _musicList = filteredList
+    const idx = _musicList.findIndex(i => i === playingMusic)
+    const len = _musicList.length
     if (idx < (len - 1)) {
-      setPlayingMusic(musicList[idx + 1])
+      setPlayingMusic(_musicList[idx + 1])
     } else {
-      setPlayingMusic(musicList[0])
+      setPlayingMusic(_musicList[0])
     }
 
     scrollAnimation()
@@ -97,6 +101,17 @@ function App() {
     })
   }
 
+
+
+  const [filter, setFilter] = useState('')
+  const [filteredList, setFilteredList] = useState(musicList)
+
+  useEffect(() => {
+    const _filteredList = musicList?.filter(i => i.includes(filter));
+    setFilteredList(_filteredList)
+  }, [filter, musicList])
+
+
   return (
     <div className="App">
       <div className='ControlPanel'>
@@ -110,11 +125,13 @@ function App() {
 
       </div>
       <main className='MusicBox'>
-        <MusicList playingMusic={playingMusic} musicList={musicList} setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
+        <MusicList filter={filter} setFilter={setFilter} filteredList={filteredList} setFilteredList={setFilteredList} playingMusic={playingMusic} musicList={musicList} setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
         <MusicPlayer
           playPrevMusic={playPrevMusic}
           playNextMusic={playNextMusic}
           deleteMusic={deleteMusic}
+          setPlayMode={setPlayMode}
+          playMode={playMode}
           setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
       </main>
 

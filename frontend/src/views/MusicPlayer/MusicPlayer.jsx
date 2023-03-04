@@ -8,6 +8,8 @@ function MusicPlayer({
   playPrevMusic,
   playNextMusic,
   deleteMusic,
+  setPlayMode,
+  playMode,
 }) {
   console.log("playingMusic", playingMusic);
 
@@ -39,14 +41,18 @@ function MusicPlayer({
   }, [playingMusic]);
 
   useEffect(() => {
+    if (playMode === "single-loop") {
+      return;
+    }
     audioRef.current.addEventListener("ended", playNextMusic);
 
     return () => {
+      if (playMode === "single-loop") {
+        return;
+      }
       audioRef.current.removeEventListener("ended", playNextMusic);
     };
-  }, [playNextMusic]);
-
-  
+  }, [playNextMusic, playMode]);
 
   const playCurrentMusic = () => {
     audioRef.current.pause();
@@ -61,7 +67,11 @@ function MusicPlayer({
           <h1 className={classes.MusicPlayAudioTitle}>{playingMusic}</h1>
         </div>
 
-        <AudioPlayer key={mPlayingMusic} ref={audioRef} mPlayingMusic={mPlayingMusic} />
+        <AudioPlayer
+          key={mPlayingMusic}
+          ref={audioRef}
+          mPlayingMusic={mPlayingMusic}
+        />
       </div>
       <div className={classes.ButtonGroup}>
         <button
@@ -88,6 +98,19 @@ function MusicPlayer({
           onClick={deleteMusic}
         >
           delete
+        </button>
+
+        <button
+          className={`${classes.ChangePlayModeButton} ${classes.Button}`}
+          onClick={() => {
+            if(playMode ==='single-loop'){
+              setPlayMode("order")
+            }else{
+              setPlayMode("single-loop")
+            }
+          }}
+        >
+          {playMode === 'single-loop' ? `one loop`:`order`}
         </button>
       </div>
     </div>
