@@ -40,19 +40,28 @@ function MusicPlayer({
     };
   }, [playingMusic]);
 
+  const playCurrentAgain = () => {
+    audioRef.current.currentTime = 0;
+    audioRef.current.play();
+  };
+
   useEffect(() => {
     if (playMode === "single-loop") {
+      audioRef.current.addEventListener("ended", playCurrentAgain);
+
       return;
     }
     audioRef.current.addEventListener("ended", playNextMusic);
 
     return () => {
       if (playMode === "single-loop") {
+        audioRef.current.removeEventListener("ended", playCurrentAgain);
+
         return;
       }
       audioRef.current.removeEventListener("ended", playNextMusic);
     };
-  }, [playNextMusic, playMode]);
+  }, [playNextMusic, playMode, mPlayingMusic]);
 
   const playCurrentMusic = () => {
     audioRef.current.pause();
@@ -103,15 +112,14 @@ function MusicPlayer({
         <button
           className={`${classes.ChangePlayModeButton} ${classes.Button}`}
           onClick={() => {
-            if(playMode ==='single-loop'){
-              setPlayMode("order")
-            }else{
-              setPlayMode("single-loop")
+            if (playMode === "single-loop") {
+              setPlayMode("order");
+            } else {
+              setPlayMode("single-loop");
             }
           }}
-          style={{display:'none'}}
         >
-          {playMode === 'single-loop' ? `one loop`:`order`}
+          {playMode === "single-loop" ? `one loop` : `order`}
         </button>
       </div>
     </div>
