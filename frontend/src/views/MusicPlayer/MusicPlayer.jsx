@@ -3,6 +3,11 @@ import { getMusic } from "../../api/api";
 import classes from "./MusicPlayer.module.sass";
 import AudioPlayer from "./AudioPlayer";
 
+const MODE_PLAY = {
+  SINGLE_LOOP: "single-loop",
+  ORDER: "order",
+};
+
 function MusicPlayer({
   playingMusic,
   playPrevMusic,
@@ -46,7 +51,7 @@ function MusicPlayer({
   };
 
   useEffect(() => {
-    if (playMode === "single-loop") {
+    if (playMode === MODE_PLAY.SINGLE_LOOP) {
       audioRef.current.addEventListener("ended", playCurrentAgain);
 
       return;
@@ -54,7 +59,7 @@ function MusicPlayer({
     audioRef.current.addEventListener("ended", playNextMusic);
 
     return () => {
-      if (playMode === "single-loop") {
+      if (playMode === MODE_PLAY.SINGLE_LOOP) {
         audioRef.current.removeEventListener("ended", playCurrentAgain);
 
         return;
@@ -112,14 +117,14 @@ function MusicPlayer({
         <button
           className={`${classes.ChangePlayModeButton} ${classes.Button}`}
           onClick={() => {
-            if (playMode === "single-loop") {
-              setPlayMode("order");
+            if (playMode === MODE_PLAY.SINGLE_LOOP) {
+              setPlayMode(MODE_PLAY.ORDER);
             } else {
-              setPlayMode("single-loop");
+              setPlayMode(MODE_PLAY.SINGLE_LOOP);
             }
           }}
         >
-          {playMode === "single-loop" ? `one loop` : `order`}
+          {playMode === MODE_PLAY.SINGLE_LOOP ? `one loop` : `order`}
         </button>
       </div>
     </div>
