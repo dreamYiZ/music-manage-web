@@ -4,12 +4,6 @@ import classes from "./MusicList.module.sass";
 
 function MusicList({ filter,setFilter, filteredList, setFilteredList,musicList, setPlayingMusic, playingMusic }) {
 
-
-
-  // useEffect(()=>{
-  //   setFilteredList(musicList)
-  // },[musicList])
-  console.log('filter', filter)
   return (
     <div>
       <input className={classes.Filter}  onChange={(e)=>setFilter(e.target.value)} />

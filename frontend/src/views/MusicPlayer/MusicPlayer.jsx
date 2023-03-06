@@ -21,35 +21,35 @@ function MusicPlayer({
   const [mPlayingMusic, mSetPlayingMusic] = useState();
   const audioRef = useRef();
 
-  useEffect(() => {
-    // let isFirstLoad = true;
 
+  // load music file by filename, generate real filepath by filename
+  useEffect(() => {
     const fetchData = async () => {
       const playingMusicUrl = await getMusic(playingMusic);
       console.log("playingMusicUrl", playingMusicUrl);
-      // if (isFirstLoad) {
       mSetPlayingMusic(playingMusicUrl);
-
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.load();
         audioRef.current.play();
       }
-      // }
     };
 
     fetchData().catch(console.error);
 
     return () => {
-      // isFirstLoad = false;
     };
   }, [playingMusic]);
 
+  // play current music again, loop play mode
   const playCurrentAgain = () => {
     audioRef.current.currentTime = 0;
     audioRef.current.play();
   };
 
+
+
+  // auto play next when music end
   useEffect(() => {
     if (playMode === MODE_PLAY.SINGLE_LOOP) {
       audioRef.current.addEventListener("ended", playCurrentAgain);

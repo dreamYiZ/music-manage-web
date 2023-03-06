@@ -1,7 +1,7 @@
 import classes from "./MusicListItem.module.sass";
 
 function MusicListItem({ music, setPlayingMusic, isPlaying }) {
-  // console.log("music", music);
+  
   return (
     <div>
       <button

@@ -21,6 +21,10 @@ function App() {
 
   const [playMode, setPlayMode] = useState();
 
+
+
+
+  // load all music from disk music folder
   useEffect(() => {
     let isFirstLoad = true;
 
@@ -51,13 +55,16 @@ function App() {
   }, []);
 
 
+  // scroll to playing music
   const scrollAnimation = () => {
     setTimeout(() => {
       document.querySelector('.IsPlayingMenu').scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
     }, 100)
   }
 
-  
+
+
+  // play previous music  
   const playPrevMusic = () => {
     const _musicList = filteredList
     const idx = _musicList.findIndex(i => i === playingMusic)
@@ -71,9 +78,8 @@ function App() {
     scrollAnimation()
   };
 
+  // play next music 
   const playNextMusic = () => {
-
-    
     const _musicList = filteredList
     const idx = _musicList.findIndex(i => i === playingMusic)
     const len = _musicList.length
@@ -86,6 +92,7 @@ function App() {
     scrollAnimation()
   };
 
+  // delete one music from disk
   const deleteMusic = () => {
     playingMusic && deleteMusicApi(playingMusic).then((delRes) => {
       console.log('delRes', delRes)
@@ -96,6 +103,8 @@ function App() {
   };
 
 
+
+  // change all file names to safe paths
   const makeFilenameSafe = () => {
     safeFilename().then(res => {
       console.log('safeFilename res-->', res)
@@ -104,9 +113,12 @@ function App() {
 
 
 
+  //  search filter
   const [filter, setFilter] = useState('')
   const [filteredList, setFilteredList] = useState(musicList)
 
+
+  //  search filter
   useEffect(() => {
     const _filteredList = musicList?.filter(i => i.includes(filter));
     setFilteredList(_filteredList)
@@ -116,13 +128,9 @@ function App() {
   return (
     <div className="App">
       <div className='ControlPanel'>
-
-
-
         <MenuButton onClick={makeFilenameSafe} icon={<FontAwesomeIcon icon="fa-solid fa-truck-fast" />}>
           safe filename
         </MenuButton>
-
 
       </div>
       <main className='MusicBox'>
