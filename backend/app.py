@@ -97,8 +97,11 @@ def rename():
     _fpath = app.config["MUSIC_FOLDER"];
     dir_list = os.listdir(_fpath)
     for file in dir_list:
+        if "DS_Store" in file:
+            continue
+        
         old_file = os.path.join(app.config["MUSIC_FOLDER"], file)
-        new_file = os.path.join(app.config["MUSIC_FOLDER"], util.better_filename(file))
+        new_file = os.path.join(app.config["MUSIC_FOLDER"], util.better_filename(file).replace('mp3', '.mp3'))
         os.rename(old_file, new_file)
      
     return {
