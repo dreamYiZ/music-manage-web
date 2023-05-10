@@ -83,7 +83,8 @@ def get_folder_path():
 def scan_folder():
     _fpath = app.config["MUSIC_FOLDER"];
     
-    dir_list = filter( lambda x: 'DS_Store' not in x, os.listdir(_fpath))
+    # dir_list = filter( lambda x: 'mp3' in x, os.listdir(_fpath))
+    dir_list = os.listdir(_fpath)
     return {
         'err': '0',
         'msg': 'scans-folder',
