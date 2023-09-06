@@ -21,10 +21,10 @@ services:
     volumes:
       - ./backend:/app
       - ./music:/music
-  redis:
-    image: "redis:alpine"
-    networks:
-      - music-manage
+  # redis:
+  #   image: "redis:alpine"
+  #   networks:
+  #     - music-manage
   web:
     image: nginx
     volumes:
