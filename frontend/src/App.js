@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './App.css';
 import './App.sass'
 import MusicList from './views/MusicList'
@@ -15,13 +15,43 @@ library.add(fas)
 
 function App() {
 
-  const [playingMusic, setPlayingMusic] = useState();
+  const [playingMusic, _setPlayingMusic] = useState();
 
   const [musicList, setMusicList] = useState();
 
   const [playMode, setPlayMode] = useState();
 
 
+  //  search filter
+  const [filter, setFilter] = useState('')
+  const [filteredList, _setFilteredList] = useState(musicList)
+  const musicPlayerRef = useRef();
+
+
+  const filteredListRef = useRef();
+  const setFilteredList = (d) => {
+    _setFilteredList(d);
+    filteredListRef.current = d;
+  }
+
+  const playingMusicRef = useRef(playingMusic);
+
+  const setPlayingMusic = (d) => {
+    _setPlayingMusic(d);
+    playingMusicRef.current = d;
+  }
+
+  const getMusicRefCurrent = () => {
+    return [filteredListRef.current, playingMusicRef.current];
+  }
+
+  //  search filter
+  useEffect(() => {
+    const _filteredList = musicList?.filter(i => i.includes(filter));
+
+    console.log('111_filteredList', _filteredList)
+    setFilteredList(_filteredList)
+  }, [filter, musicList])
 
 
   // load all music from disk music folder
@@ -66,7 +96,10 @@ function App() {
 
   // play previous music  
   const playPrevMusic = () => {
-    const _musicList = filteredList
+    const _musicList = filteredListRef.current;
+
+    const playingMusic = playingMusicRef.current;
+
     const idx = _musicList.findIndex(i => i === playingMusic)
     const len = _musicList.length
     if (idx > 0) {
@@ -80,7 +113,10 @@ function App() {
 
   // play next music 
   const playNextMusic = () => {
-    const _musicList = filteredList
+    const _musicList = filteredListRef.current;
+    const playingMusic = playingMusicRef.current;
+
+    console.log('filteredList', filteredList)
     const idx = _musicList.findIndex(i => i === playingMusic)
     const len = _musicList.length
     if (idx < (len - 1)) {
@@ -92,8 +128,13 @@ function App() {
     scrollAnimation()
   };
 
+
+
+
   // delete one music from disk
   const deleteMusic = () => {
+
+    const [musicList, playingMusic] = getMusicRefCurrent();
     playingMusic && deleteMusicApi(playingMusic).then((delRes) => {
       console.log('delRes', delRes)
       playNextMusic()
@@ -112,17 +153,65 @@ function App() {
   }
 
 
+  const stopPlay = () => {
+    musicPlayerRef.current.stopAudio();
+  }
 
-  //  search filter
-  const [filter, setFilter] = useState('')
-  const [filteredList, setFilteredList] = useState(musicList)
+  const togglePlay = () => {
+    musicPlayerRef.current.togglePlay();
+  }
 
 
-  //  search filter
+  const jumpTo = (n) => {
+    musicPlayerRef.current.jumpTo(n);
+  }
+
   useEffect(() => {
-    const _filteredList = musicList?.filter(i => i.includes(filter));
-    setFilteredList(_filteredList)
-  }, [filter, musicList])
+    const keyPress = (event) => {
+      const name = event.key;
+      const code = event.code;
+
+
+      const KEY_ARROW_LEFT = "ArrowLeft";
+      const KEY_ARROW_RIGHT = "ArrowRight";
+      const KEY_SPACE = 'Space';
+      const KEY_DELETE = 'Delete';
+
+      if (code === KEY_ARROW_LEFT) {
+        playPrevMusic();
+      }
+
+      if (code === KEY_ARROW_RIGHT) {
+        playNextMusic();
+      }
+
+
+      if (code === KEY_SPACE) {
+        togglePlay();
+      }
+
+      if (code === KEY_DELETE) {
+        deleteMusic();
+      }
+
+      if (Array.from(Array(10).keys()).map(i => `Digit${i}`).includes(code)) {
+
+        jumpTo(
+          Array.from(code).pop()
+        )
+
+      }
+
+
+      // Alert the key name and key code on keydown
+      console.log(`key name: ${name}, key code: ${code}`);
+      // alert(`Key pressed ${name} \r\n Key code value: ${code}`);
+    }
+    document.addEventListener("keydown", keyPress)
+    return () => {
+      document.removeEventListener("keydown", keyPress);
+    }
+  }, [])
 
 
   return (
@@ -141,7 +230,8 @@ function App() {
           deleteMusic={deleteMusic}
           setPlayMode={setPlayMode}
           playMode={playMode}
-          setPlayingMusic={setPlayingMusic} playingMusic={playingMusic} />
+          setPlayingMusic={setPlayingMusic} playingMusic={playingMusic}
+          ref={musicPlayerRef} />
       </main>
 
 
