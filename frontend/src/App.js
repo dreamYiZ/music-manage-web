@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import MenuButton from './views/MenuButton/MenuButton'
-
+import ShortCutKey from "./views/ShortCutKey/ShortCutKey"
 
 library.add(fas)
 
@@ -234,7 +234,7 @@ function App() {
           ref={musicPlayerRef} />
       </main>
 
-
+      <ShortCutKey />
     </div>
   );
 }

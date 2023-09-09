@@ -1,0 +1,38 @@
+.short-cut-text
+    position: fixed
+    right: 60px
+    bottom: 60px
+    width: 70px
+    height: 30px
+    border: 1px solid red
+    display: flex
+    align-items: center
+    justify-content: center
+    cursor: pointer
+
+.short-cut-overlay
+    position: fixed
+    width: 600px
+    height: 370px
+    border: 1px solid red
+    border-radius: 15px
+    left: 50%
+    transform: translateX(-50%) translateY(-50%)
+    top: 50%
+    display: none
+    background-color: rgba(0,0,0,.6)
+    padding-left: 30px
+    padding-top: 30px
+.short-cut-visible
+    display: block
+.short-cut-item
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    width: 160px
+.short-cut-header
+    margin-bottom: 20px
+.short-cut-label
+    margin-right: 10px
+    &::after
+        content: ":"
